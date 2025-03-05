@@ -1,11 +1,11 @@
 <template>
-    <div class="app">
-        <PurchaseList />
-    </div>
+  <div class="app">
+    <PurchaseList />
+  </div>
 </template>
 
-<script>
+<script></script>
 
-</script>
-
-<style src="@/assets/css/index.scss" lang="scss"></style>
+<style scoped lang="scss">
+@use "~/assets/scss/index.scss"
+</style>

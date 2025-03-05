@@ -1,13 +1,14 @@
 <template>
-    <div class="purchase-list">
-        <ListItem />
-    </div>
+  <div class="purchase-list">
+    <ListItem />
+    <ListMenu />
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
-<style src="@/assets/css/purchaseList.scss" lang="scss"></style>
+<style scoped lang="scss">
+@use "~/assets/scss/PurchaseList.scss"
+</style>

@@ -1,0 +1,55 @@
+@use 'variables' as *;
+
+body {
+    background-color: $app-bg;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: $input-text;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.icon {
+    font-size: 20px;
+    transition: all 0.2s;
+
+    &.button_icon {
+        color: $input-text;
+    }
+
+    &.link_icon {
+        color: inherit;
+    }
+}
+
+a {
+    color: $task-completed;
+    text-decoration: none;
+    transition: all 0.2s;
+
+    &:hover {
+        color: $button-primary;
+    }
+}
+
+button {
+    background: none;
+    border: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        color: $button-primary;
+        background: $button-primary-bg;
+    }
+
+    &:hover > .icon {
+        color: $button-primary;
+    }
+}

@@ -1,0 +1,29 @@
+// Base Colors
+$color-white: #ffffff;
+$color-black: #262626;
+$color-gray-dark: #2e2e2e;
+$color-gray-medium: #363636;
+$color-gray-light: #ffffff1e;
+
+// App Backgrounds
+$app-bg: $color-black;
+$header-bg: $color-gray-dark;
+
+// Task & Input Colors
+$task-completed: rgba($color-white, 0.19);
+$input-bg: $color-gray-medium;
+$input-active-bg: $color-gray-light;
+$input-text: $color-white;
+
+// Buttons
+$button-primary: #e06155;
+$button-primary-bg: rgba($button-primary, 0.16);
+$button-hover-bg: rgba($button-primary, 0.25);
+$button-active-bg: rgba($button-primary, 0.47);
+$button-text: $button-primary;
+$button-text-hover: $color-white;
+
+// Checkbox Colors
+$checkbox-bg: rgba($color-white, 0.09);
+$checkbox-hover-bg: rgba($color-white, 0.03);
+$checkbox-active-bg: rgba($color-white, 0.22);

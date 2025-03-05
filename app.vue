@@ -7,4 +7,5 @@
   </div>
 </template>
 
-<style src="@/assets/css/app.scss" lang="scss"></style>
+<style src="~/assets/scss/app.scss" lang="scss">
+</style>

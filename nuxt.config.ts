@@ -1,6 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
+  app: {
+    head: {
+      title: 'Shopping List'
+    }
+  },
   devtools: { enabled: true },
   modules: ['@nuxt/icon'],
+  css: ['~/assets/scss/global.scss'],
 })
