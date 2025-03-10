@@ -11,9 +11,17 @@
 </template>
 
 <script setup lang="ts">
-import { UI } from "~/ui/UI";
-import { PurchaseController } from "~/controllers/PurchaseController";
+import { UI } from '~/ui/UI';
+import { PurchaseController } from '~/controllers/PurchaseController';
+import { useNuxtApp } from '#app';
 
 const controller = new PurchaseController();
 const ui = new UI(controller);
+
+const nuxtApp = useNuxtApp();
+nuxtApp.hook('app:addItem', (text: string) => {
+  if (text.trim() !== '') {
+    ui.addItem(text.trim());
+  }
+});
 </script>

@@ -1,48 +1,84 @@
-import { reactive } from "vue";
-import PurchaseModel from "~/models/PurchaseModel";
-import PurchaseItem from "~/models/PurchaseItem";
+import { reactive, ref } from 'vue';
+import { PurchaseItem } from '~/models/PurchaseModel';
 
 export class PurchaseController {
-  model: PurchaseModel;
-  apiPath: string;
+  public items = reactive<PurchaseItem[]>([]);
+  public filter = ref<'all' | 'done' | 'undone'>('all');
 
   constructor() {
-    this.model = reactive(new PurchaseModel());
-    this.apiPath = "/api/purchases";
+    this.fetchItems();
   }
 
-  // Получаем список с сервера
-  fetchInitialList(): Promise<PurchaseItem[]> {
-    return fetch(this.apiPath)
-      .then((response) => response.json())
-      .then((data: PurchaseItem[]) => {
-        this.model.items.splice(0, this.model.items.length, ...data);
-        return this.model.items;
+  async fetchItems() {
+    try {
+      const response = await fetch('/api/purchase-list');
+      const data = await response.json();
+      this.items.splice(0, this.items.length, ...data);
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  }
+
+  async addItem(text: string) {
+    try {
+      const response = await fetch('/api/purchase-list', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
       });
+      const newItem = await response.json();
+      this.items.push(new PurchaseItem(newItem.id, newItem.text, newItem.completed));
+    } catch (error) {
+      console.error('Item add error:', error);
+    }
   }
 
-  // Добавляем товар
-  addItem(text: string): Promise<void> {
-    return fetch(`${this.apiPath}/add`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
-    }).then(() => {});
+  async toggleItem(id: number) {
+    try {
+      const response = await fetch('/api/purchase-list', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      const updatedItem = await response.json();
+      const item = this.items.find((i) => i.id === updatedItem.id);
+      if (item) item.completed = updatedItem.completed;
+    } catch (error) {
+      console.error('Item toggle error:', error);
+    }
   }
 
-  // Удаляем товар
-  removeItem(id: number): Promise<void> {
-    return fetch(`${this.apiPath}/${id}`, { method: "DELETE" }).then(() => {});
+  async removeItem(id: number) {
+    try {
+      await fetch('/api/purchase-list', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      const index = this.items.findIndex((i) => i.id === id);
+      if (index !== -1) this.items.splice(index, 1);
+    } catch (error) {
+      console.error('Item remove error:', error);
+    }
   }
 
-  // Переключаем статус "сделано/не сделано"
-  toggleCompletion(id: number): Promise<void> {
-    return fetch(`${this.apiPath}/${id}`, { method: "PATCH" }).then(() => {});
+  async clearList() {
+    if (!window.confirm('Are you sure? This action cannot be undone.')) return;
+    try {
+      await fetch('/api/purchase-list/clear', { method: 'DELETE' });
+      this.items.splice(0, this.items.length);
+    } catch (error) {
+      console.error('Error clearing list:', error);
+    }
   }
 
-  // Очищаем весь список
-  async clearList(): Promise<void> {
-    alert("OK");
-    return fetch(`${this.apiPath}/clear`, { method: "POST" }).then(() => {});
+  setFilter(filter: 'all' | 'done' | 'undone') {
+    this.filter.value = filter;
+  }
+
+  getFilteredItems() {
+    if (this.filter.value === 'done') return this.items.filter((item) => item.completed);
+    if (this.filter.value === 'undone') return this.items.filter((item) => !item.completed);
+    return this.items;
   }
 }
