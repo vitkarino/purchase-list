@@ -1,11 +1,19 @@
 <template>
   <div class="app">
-    <PurchaseList />
+    <PurchaseList
+      :items="ui.filteredItems.value"
+      @remove="(id) => ui.removeItem(id)"
+      @toggle="(id) => ui.toggleItem(id)"
+      @clear="() => ui.clearList()"
+      @setFilter="(filter) => ui.setFilter(filter)"
+    />
   </div>
 </template>
 
-<script></script>
+<script setup lang="ts">
+import { UI } from "~/ui/UI";
+import { PurchaseController } from "~/controllers/PurchaseController";
 
-<style scoped lang="scss">
-@use "~/assets/scss/index.scss"
-</style>
+const controller = new PurchaseController();
+const ui = new UI(controller);
+</script>
