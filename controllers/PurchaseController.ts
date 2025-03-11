@@ -65,9 +65,14 @@ export class PurchaseController {
     }
 
     async clearList() {
-        if (!window.confirm('Are you sure? This action cannot be undone.')) return;
+        if (!window.confirm('Are you sure? This action cannot be undone.'))
+            return;
         try {
-            await fetch('/api/purchase-list/clear', { method: 'DELETE' });
+            await fetch(`${baseUrl}/api/purchase-list`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'clear' })
+            });
             this.items.splice(0, this.items.length);
         } catch (error) {
             console.error('Error clearing list:', error);

@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "text": "Bread",
+    "completed": false
+  },
+  {
+    "id": 2,
+    "text": "Butter",
+    "completed": true
+  },
+  {
+    "id": 3,
+    "text": "Milk",
+    "completed": true
+  }
+]
