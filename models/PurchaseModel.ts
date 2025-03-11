@@ -1,11 +1,11 @@
 export class PurchaseItem {
-  id;
-  text;
-  completed;
+    id;
+    text;
+    completed;
 
-  constructor(id: number, text: string, completed: boolean = false) {
-    this.id = id;
-    this.text = text;
-    this.completed = completed;
-  }
+    constructor(id: number, text: string, completed: boolean = false) {
+        this.id = id;
+        this.text = text;
+        this.completed = completed;
+    }
 }

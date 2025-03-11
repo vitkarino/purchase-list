@@ -1,0 +1,36 @@
+@use "variables" as *;
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin standard-transition {
+    transition: all 0.2s ease;
+}
+
+@mixin button-base {
+    background: none;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50px;
+    cursor: pointer;
+    @include flex-center;
+    @include standard-transition;
+
+    &:hover {
+        color: $button-primary;
+        background: $button-primary-bg;
+
+        > .icon {
+            color: $button-primary;
+        }
+    }
+}

@@ -1,41 +1,39 @@
 @use "variables" as *;
+@use "mixins" as *;
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: auto;
-  padding: 10px 0;
-  width: 400px;
-  font-size: 16px;
-
-  .header__form {
+.app__header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: 5px;
+    margin: auto;
+    padding: 10px 0;
+    width: 400px;
+    font-size: 16px;
 
-    .form__input {
-      width: 200px;
-      height: 36px;
-      padding-left: 20px;
-      border: 1px solid $color-gray-dark;
-      border-radius: 50px;
-      outline: none;
-      position: relative;
-      background-color: $input-bg;
-      color: $input-text;
-      transition: all 0.2s ease;
-    }
+    .header__form {
+        @include flex-center;
+        justify-content: center;
+        gap: 5px;
 
-    .form__input:focus {
-      background-color: $input-active-bg;
+        .form__input {
+            width: 200px;
+            height: 36px;
+            padding-left: 20px;
+            border: 1px solid $color-gray-dark;
+            border-radius: 50px;
+            outline: none;
+            position: relative;
+            background-color: $input-bg;
+            color: $input-text;
+            @include standard-transition;
+
+            &:focus {
+                background-color: $input-active-bg;
+            }
+        }
     }
 
     .button_submit {
-      transition:
-        background 0.2s ease,
-        color 0.2s ease;
+        @include button-base;
     }
-  }
 }
