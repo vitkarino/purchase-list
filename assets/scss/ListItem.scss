@@ -4,10 +4,10 @@
 .list-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 18px 0;
-    width: 400px;
-    font-size: 18px;
+    gap: 0.65em;
+    padding: 1em 0;
+    width: 100%;
+    font-size: 16pt;
     border-bottom: 1px solid $input-bg;
 
     .button_remove {
@@ -26,6 +26,7 @@
 
     .button_checkbox {
         @include button-base;
+        display: flex;
         background-color: $checkbox-bg;
 
         &:hover {

@@ -1,15 +1,17 @@
 import { computed } from 'vue';
 import { PurchaseController } from '~/controllers/PurchaseController';
 
-export class UI {
+export class PurchaseListUI {
     private controller: PurchaseController;
-    public filteredItems = computed(() => this.controller.getFilteredItems());
+    public filteredItems;
 
     constructor(controller: PurchaseController) {
-        this.controller = controller;
+        this.controller = controller || new PurchaseController();
+        this.filteredItems = computed(() => this.controller.getFilteredItems());
     }
 
     addItem(text: string) {
+        console.log('addItem', text);
         this.controller.addItem(text);
     }
 
@@ -18,6 +20,7 @@ export class UI {
     }
 
     removeItem(id: number) {
+        console.log('removeItem', id);
         this.controller.removeItem(id);
     }
 

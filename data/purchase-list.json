@@ -1,17 +1,7 @@
 [
   {
-    "id": 1,
-    "text": "Bread",
+    "id": 41,
+    "text": "sdf",
     "completed": false
-  },
-  {
-    "id": 2,
-    "text": "Butter",
-    "completed": true
-  },
-  {
-    "id": 3,
-    "text": "Milk",
-    "completed": true
   }
 ]

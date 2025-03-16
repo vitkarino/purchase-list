@@ -4,24 +4,28 @@
             No items found.
         </div>
         <ListItem
-            v-for="item in items"
+            v-for="item in props.items"
             :key="item.id"
             :item="item"
-            @remove="emit('remove', item.id)"
-            @toggle="emit('toggle', item.id)"
+            @remove="ui.removeItem(item.id)"
+            @toggle="ui.toggleItem(item.id)"
         />
-        <ListMenu
-            @setFilter="emit('setFilter', $event)"
-            @clear="emit('clear')"
-        />
+        
     </div>
+    <ListMenu
+            @setFilter="ui.setFilter($event)"
+            @clear="ui.clearList()"
+        />
 </template>
 
 <script setup lang="ts">
-    import { PurchaseItem } from '~/models/PurchaseModel';
+import { PurchaseItem } from '~/models/PurchaseModel';
+import { PurchaseStore } from '~/stores/PurchaseStore';
 
-    defineProps<{ items: PurchaseItem[] }>();
-    const emit = defineEmits(['toggle', 'remove', 'setFilter', 'clear']);
+const props = defineProps<{ items: PurchaseItem[] }>();
+
+const store = PurchaseStore.getInstance();
+const ui = store.getUI();
 </script>
 
 <style scoped lang="scss">

@@ -4,4 +4,5 @@
 .purchase-list {
     @include flex-column;
     align-items: center;
+    margin-top: 2em;
 }

@@ -13,9 +13,9 @@ export class PurchaseController {
 
     async fetchItems() {
         try {
-            const response = await fetch(`${baseUrl}/api/purchase-list`);
+            const response = await fetch(`${baseUrl}/api/PurchaseListAPI`);
             const data = await response.json();
-            this.items.splice(0, this.items.length, ...data);
+            this.items.splice(0, this.items.length, ...(Object.values(data) as PurchaseItem[]));
         } catch (error) {
             console.error('Fetch error:', error);
         }
@@ -23,59 +23,68 @@ export class PurchaseController {
 
     async addItem(text: string) {
         try {
-            const response = await fetch('/api/purchase-list', {
+            const response = await fetch(`${baseUrl}/api/PurchaseListAPI`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text })
             });
             const newItem = await response.json();
-            this.items.push(new PurchaseItem(newItem.id, newItem.text, newItem.completed));
+            this.items.push(newItem);
         } catch (error) {
-            console.error('Item add error:', error);
+            console.error('Fetch error:', error);
         }
     }
 
     async toggleItem(id: number) {
         try {
-            const response = await fetch('/api/purchase-list', {
+            const response = await fetch(`${baseUrl}/api/PurchaseListAPI`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id })
             });
             const updatedItem = await response.json();
-            const item = this.items.find((i) => i.id === updatedItem.id);
-            if (item) item.completed = updatedItem.completed;
+            
+            // Find and update the item in the array
+            const index = this.items.findIndex(item => item.id === updatedItem.id);
+            if (index !== -1) {
+                // Replace the item with the updated one
+                this.items[index] = updatedItem;
+            }
         } catch (error) {
-            console.error('Item toggle error:', error);
+            console.error('Fetch error:', error);
         }
     }
 
     async removeItem(id: number) {
         try {
-            await fetch('/api/purchase-list', {
+            await fetch(`${baseUrl}/api/PurchaseListAPI`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id })
             });
-            const index = this.items.findIndex((i) => i.id === id);
-            if (index !== -1) this.items.splice(index, 1);
+            
+            const index = this.items.findIndex(i => i.id === id);
+            if (index !== -1) {
+                this.items.splice(index, 1);
+            }
         } catch (error) {
-            console.error('Item remove error:', error);
+            console.error('Fetch error:', error);
         }
     }
 
     async clearList() {
         if (!window.confirm('Are you sure? This action cannot be undone.'))
             return;
+        
         try {
-            await fetch(`${baseUrl}/api/purchase-list`, {
+            await fetch(`${baseUrl}/api/PurchaseListAPI`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: 'clear' })
             });
             this.items.splice(0, this.items.length);
         } catch (error) {
-            console.error('Error clearing list:', error);
+            console.error('Fetch error:', error);
         }
     }
 

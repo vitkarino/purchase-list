@@ -1,28 +1,83 @@
-@use 'variables' as *;
-@use 'mixins' as *;
+@use "variables" as *;
+@use "mixins" as *;
 
 .list-menu {
-    @include flex-column;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-    width: 400px;
+  @include flex-column;
+  align-items: stretch;
+  gap: 1em 0;
+  width: fit-content;
+  font-size: 10pt;
+  margin: 2em auto;
+  // flex-grow: 1;
 
-    .sort-controls {
-        @include flex-center;
-        justify-content: flex-start;
-        gap: 5px;
-    }
+  .sort-controls {
+    @include flex-center;
+    justify-content: space-between;
+    background-color: $input-bg;
+    // width: 100%;
+    padding: 0.325em;
+    border-radius: 50px;
 
     .button_clear {
-        width: 310px !important;
+      @include button-base;
+      color: $color-white;
+      width: inherit;
+      // gap: 5px;
+      border: 1px solid $checkbox-bg;
     }
 
-    .button_sort, .button_clear {
-        @include button-base;
-        color: $color-white;
-        width: 100px;
-        gap: 5px;
-        border: 1px solid $checkbox-bg;
+    .button_radio {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      // width: 100px;
+      // padding: 8px 16px;
+      // background-color: $checkbox-bg !important;
+      color: $color-white;
+      border-radius: 50px;
+      // gap: 5px;
+      // border: 1px solid transparent;
+      transition: all 0.3s ease;
+  
+      &:hover {
+        background-color: $button-primary-bg !important;
+      }
+  
+      & input[type="radio"] {
+        display: none;
+      }
+  
+      // & span {
+      //   display: inline-block;
+      // }
+
+      &:has(input[type="radio"]:checked) {
+        color: $button-primary;
+        background-color:  $button-primary-bg !important;
+      }
+  
+      & input[type="radio"]:checked + span {
+        border-color: red;
+      }
     }
+  }
+
+  .button_clear {
+    font-size: 10pt;
+    width: 310px !important;
+    background-color: $checkbox-bg !important;
+
+    &:hover {
+      background-color: $button-primary-bg !important;
+    }
+  }
+
+  .button_radio,
+  .button_clear {
+    @include button-base;
+    color: $color-white;
+    width: 100px;
+    // gap: 5px;
+    // border: 1px solid $checkbox-bg;
+  }
 }
