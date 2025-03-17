@@ -1,8 +1,12 @@
-@use 'variables' as *;
-@use 'mixins' as *;
+@use "variables" as *;
+@use "mixins" as *;
 
 .purchase-list {
-    @include flex-column;
-    align-items: center;
-    margin-top: 2em;
+	margin-top: 2em;
+}
+
+.empty-list-message {
+	font-size: 16pt;
+	text-align: center;
+	color: $input-text;
 }

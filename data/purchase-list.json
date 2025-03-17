@@ -1,7 +1,17 @@
-[
-  {
-    "id": 41,
-    "text": "sdf",
+{
+  "17": {
+    "id": 17,
+    "text": "Bread",
     "completed": false
+  },
+  "18": {
+    "id": 18,
+    "text": "Butter",
+    "completed": true
+  },
+  "19": {
+    "id": 19,
+    "text": "Milk",
+    "completed": true
   }
-]
+}

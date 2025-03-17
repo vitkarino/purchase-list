@@ -1,41 +1,41 @@
-@use 'variables' as *;
-@use 'mixins' as *;
+@use "variables" as *;
+@use "mixins" as *;
 
 .list-item {
-    display: flex;
-    align-items: center;
-    gap: 0.65em;
-    padding: 1em 0;
-    width: 100%;
-    font-size: 16pt;
-    border-bottom: 1px solid $input-bg;
+	display: flex;
+	align-items: center;
+	gap: 0.65em;
+	padding-block: 1em;
+	flex-grow: 1;
+	font-size: 16pt;
+	border-bottom: 1px solid $input-bg;
 
-    .button_remove {
-        margin-left: auto;
-        @include button-base;
-    }
+	.button_remove {
+		@include icon-button;
+		margin-left: auto;
+	}
 
-    &.item_completed .list-item__text {
-        text-decoration: line-through;
-        color: gray;
-    }
+	&.item_completed .list-item__text {
+		text-decoration: line-through;
+		opacity: 0.3;
+	}
 
-    &.item_completed .button_checkbox .button_icon {
-        display: block;
-    }
+	&.item_completed .button_checkbox .button_icon {
+		display: block;
+	}
 
-    .button_checkbox {
-        @include button-base;
-        display: flex;
-        background-color: $checkbox-bg;
+	.button_checkbox {
+		@include icon-button;
+		display: flex;
+		background-color: $checkbox-bg;
 
-        &:hover {
-            background-color: $checkbox-hover-bg;
-        }
+		&:hover {
+			background-color: $button-primary-bg;
+		}
 
-        .button_icon {
-            color: $color-white;
-            display: none;
-        }
-    }
+		.button_icon {
+			color: $color-white;
+			display: none;
+		}
+	}
 }

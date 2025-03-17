@@ -1,38 +1,35 @@
-@use 'variables' as *;
-@use 'mixins' as *;
+@use "variables" as *;
+@use "mixins" as *;
 
 body {
-    background-color: $app-bg;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color: $input-text;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+	background-color: $app-bg;
+	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+	color: $input-text;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
 
 .icon {
-    font-size: 16pt;
-    @include standard-transition;
+	@include transition;
+	font-size: 16pt;
 
-    &.button_icon {
-        color: $input-text;
-    }
+	&.button_icon {
+		color: $input-text;
+	}
 
-    &.link_icon {
-        color: inherit;
-    }
+	&.link_icon {
+		color: inherit;
+	}
 }
 
 a {
-    color: $task-completed;
-    text-decoration: none;
-    @include standard-transition;
+	@include transition;
+	color: $task-completed;
+	text-decoration: none;
 
-    &:hover {
-        color: $button-primary;
-    }
-}
-
-button {
-    @include button-base;
+	&:hover {
+		color: $button-primary;
+	}
 }

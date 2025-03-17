@@ -1,0 +1,39 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.undo-notification {
+	@include flex-center;
+	position: fixed;
+	width: 210px;
+	height: 50px;
+	font-size: 10pt;
+	padding-inline: 1em;
+	bottom: 10%;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: $checkbox-bg;
+	border-radius: 50px;
+	justify-content: space-between;
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+}
+
+.undo_button {
+	@include text-button;
+	background-color: $checkbox-bg;
+
+	&:hover {
+		background-color: $button-primary-bg;
+	}
+}
+
+.fade-enter-active,
+.fade-leave-active {
+	@include transition(all, 0.3s);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+	transform: translateX(-50%) translateY(20px);
+}

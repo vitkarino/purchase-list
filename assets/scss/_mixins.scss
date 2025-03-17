@@ -1,36 +1,60 @@
 @use "variables" as *;
 
 @mixin flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-@mixin flex-column {
-    display: flex;
-    flex-direction: column;
+@mixin flex-column($align: stretch) {
+	display: flex;
+	flex-direction: column;
+	align-items: $align;
 }
 
-@mixin standard-transition {
-    transition: all 0.2s ease;
+@mixin transition($property: all, $duration: 0.2s) {
+	transition: $property $duration ease;
 }
 
-@mixin button-base {
-    background: none;
-    border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50px;
-    cursor: pointer;
-    @include flex-center;
-    @include standard-transition;
+@mixin button-base($size: auto) {
+	@include transition;
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	font-family: inherit;
+	color: $color-white;
+	width: $size;
+	height: $size;
+}
 
-    &:hover {
-        color: $button-primary;
-        background: $button-primary-bg;
+@mixin text-button {
+	@include button-base;
+	padding: 0.5em 1em;
+	width: fit-content;
+	border-radius: 50px;
+	font-size: 10pt;
+	background-color: $checkbox-bg;
+	color: $color-white;
 
-        > .icon {
-            color: $button-primary;
-        }
-    }
+	&:hover {
+		background-color: $button-primary-bg;
+		color: $button-primary;
+	}
+}
+
+@mixin icon-button($size: 36px) {
+	@include button-base($size);
+	@include flex-center;
+	border-radius: 50%;
+	color: $color-white;
+
+	&:hover {
+		color: $button-primary;
+		background: $button-primary-bg;
+
+		> .icon {
+			color: $button-primary;
+		}
+	}
 }
