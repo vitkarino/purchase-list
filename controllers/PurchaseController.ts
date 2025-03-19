@@ -9,10 +9,6 @@ export class PurchaseController {
 	public lastRemovedItem = ref<{ item: PurchaseItem; index: number } | null>(
 		null
 	);
-	public showUndoNotification = ref<boolean>(false);
-	public lastClearedItems = ref<PurchaseItem[]>([]);
-	public notificationType = ref<"remove" | "clear">("remove");
-	private notificationTimeout: NodeJS.Timeout | null = null;
 
 	constructor() {
 		this.fetchItems();
@@ -56,11 +52,9 @@ export class PurchaseController {
 		})
 			.then((response) => response.json())
 			.then((updatedItem) => {
-				const index = this.items.findIndex(
-					(item) => item.id === updatedItem.id
-				);
+				const index = this.items.findIndex((i) => i.id === updatedItem.id);
 				if (index !== -1) {
-					this.items[index] = updatedItem;
+					this.items[index] = new PurchaseItem(updatedItem);
 				}
 			})
 			.catch((error) => {
@@ -70,127 +64,106 @@ export class PurchaseController {
 
 	removeItem(id: number) {
 		const index = this.items.findIndex((i) => i.id === id);
-		if (index !== -1) {
-			this.lastRemovedItem.value = {
-				item: { ...this.items[index] },
-				index: index,
-			};
+		if (index === -1) return;
+	
+		// Store the item for potential undo
+		this.lastRemovedItem.value = { 
+		  item: { ...this.items[index] }, 
+		  index 
+		};
+	
+		fetch(`${baseUrl}/api/PurchaseListAPI`, {
+		  method: "DELETE",
+		  headers: { "Content-Type": "application/json" },
+		  body: JSON.stringify({ id }),
+		})
+		  .then(() => {
+			this.items.splice(index, 1);
+		  })
+		  .catch((error) => {
+			console.error("Fetch error:", error);
+		  });
+		
+		// Return the notification type so UI can handle it
+		return "remove";
+	  }
 
-			fetch(`${baseUrl}/api/PurchaseListAPI`, {
-				method: "DELETE",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ id }),
-			})
-				.then(() => {
-					this.items.splice(index, 1);
+	// undoAction() {
+	// 	if (this.notificationType.value === "clear") {
+	// 		if (!this.lastClearedItems.value.length) return;
 
-					this.notificationType.value = "remove";
-					this.showUndoNotification.value = true;
+	// 		const promises = this.lastClearedItems.value.map((item) =>
+	// 			fetch(`${baseUrl}/api/PurchaseListAPI`, {
+	// 				method: "POST",
+	// 				headers: { "Content-Type": "application/json" },
+	// 				body: JSON.stringify({
+	// 					text: item.text,
+	// 					completed: item.completed,
+	// 				}),
+	// 			}).then((response) => response.json())
+	// 		);
 
-					if (this.notificationTimeout) {
-						clearTimeout(this.notificationTimeout);
-					}
+	// 		Promise.all(promises)
+	// 			.then((restoredItems) => {
+	// 				this.items.splice(0, this.items.length, ...restoredItems);
+	// 				this.showUndoNotification.value = false;
+	// 				this.lastClearedItems.value = [];
+	// 			})
+	// 			.catch((error) => console.error("Undo clear error:", error));
+	// 	} else if (this.notificationType.value === "remove") {
+	// 		if (!this.lastRemovedItem.value) return;
 
-					this.notificationTimeout = setTimeout(() => {
-						this.showUndoNotification.value = false;
-						this.lastRemovedItem.value = null;
-						this.notificationTimeout = null;
-					}, 5000);
-				})
-				.catch((error) => {
-					console.error("Fetch error:", error);
-				});
-		}
-	}
+	// 		const { item, index } = this.lastRemovedItem.value;
 
-	undoAction() {
-		if (this.notificationType.value === "clear") {
-			if (!this.lastClearedItems.value.length) return;
-
-			const promises = this.lastClearedItems.value.map((item) =>
-				fetch(`${baseUrl}/api/PurchaseListAPI`, {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						text: item.text,
-						completed: item.completed,
-					}),
-				}).then((response) => response.json())
-			);
-
-			Promise.all(promises)
-				.then((restoredItems) => {
-					this.items.splice(0, this.items.length, ...restoredItems);
-					this.showUndoNotification.value = false;
-					this.lastClearedItems.value = [];
-				})
-				.catch((error) => console.error("Undo clear error:", error));
-		} else if (this.notificationType.value === "remove") {
-			if (!this.lastRemovedItem.value) return;
-
-			const { item, index } = this.lastRemovedItem.value;
-
-			fetch(`${baseUrl}/api/PurchaseListAPI`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					text: item.text,
-					completed: item.completed,
-				}),
-			})
-				.then((response) => response.json())
-				.then((restoredItem) => {
-					const insertPosition = Math.min(index, this.items.length);
-					this.items.splice(insertPosition, 0, restoredItem);
-					this.showUndoNotification.value = false;
-					this.lastRemovedItem.value = null;
-				})
-				.catch((error) => console.error("Undo remove error:", error));
-		}
-	}
+	// 		fetch(`${baseUrl}/api/PurchaseListAPI`, {
+	// 			method: "POST",
+	// 			headers: { "Content-Type": "application/json" },
+	// 			body: JSON.stringify({
+	// 				text: item.text,
+	// 				completed: item.completed,
+	// 			}),
+	// 		})
+	// 			.then((response) => response.json())
+	// 			.then((restoredItem) => {
+	// 				const insertPosition = Math.min(index, this.items.length);
+	// 				this.items.splice(insertPosition, 0, restoredItem);
+	// 				this.showUndoNotification.value = false;
+	// 				this.lastRemovedItem.value = null;
+	// 			})
+	// 			.catch((error) => console.error("Undo remove error:", error));
+	// 	}
+	// }
 
 	clearList() {
 		if (!window.confirm("Do you want to clear the purchase list?")) return;
-
+	
 		this.lastClearedItems.value = [...this.items];
-
+	
 		fetch(`${baseUrl}/api/PurchaseListAPI`, {
-			method: "DELETE",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ action: "clear" }),
+		  method: "DELETE",
+		  headers: { "Content-Type": "application/json" },
+		  body: JSON.stringify({ action: "clear" }),
 		})
-			.then(() => {
-				this.items.splice(0, this.items.length);
-
-				this.notificationType.value = "clear";
-				this.showUndoNotification.value = true;
-
-				if (this.notificationTimeout) {
-					clearTimeout(this.notificationTimeout);
-				}
-
-				this.notificationTimeout = setTimeout(() => {
-					this.showUndoNotification.value = false;
-					this.lastClearedItems.value = [];
-					this.notificationTimeout = null;
-				}, 5000);
-			})
-			.catch((error) => {
-				console.error("Fetch error:", error);
-			});
-	}
+		  .then(() => {
+			this.items.splice(0, this.items.length);
+		  })
+		  .catch((error) => {
+			console.error("Fetch error:", error);
+		  });
+		
+		// Return the notification type so UI can handle it
+		return "clear";
+	  }
 
 	setFilter(filter: "all" | "done" | "undone") {
 		this.filter.value = filter;
 	}
 
 	getFilteredItems() {
-		if (this.filter.value === "done") {
-			return this.items.filter((item) => item.completed);
-		}
-		if (this.filter.value === "undone") {
-			return this.items.filter((item) => !item.completed);
-		}
-		return this.items;
+		return this.items.filter((item) => {
+			if (this.filter.value === "done") return item.completed;
+			if (this.filter.value === "undone") return !item.completed;
+			return true;
+		});
 	}
 }

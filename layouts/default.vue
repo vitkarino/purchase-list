@@ -23,11 +23,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { PurchaseStore } from "~/stores/PurchaseStore";
 
 const inputText = ref("");
-const store = PurchaseStore.getInstance();
-const ui = store.getUI();
 
 function handleAdd() {
 	if (inputText.value.trim() !== "") {

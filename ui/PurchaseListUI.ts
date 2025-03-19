@@ -1,17 +1,16 @@
-import { computed } from "vue";
-import { PurchaseController } from "~/controllers/PurchaseController";
+ 
 
 export class PurchaseListUI {
 	private controller: PurchaseController;
 	public readonly filteredItems;
+	public undoNotifications: any = null;
 
-	constructor(controller: PurchaseController) {
-		this.controller = controller || new PurchaseController();
+	constructor() {
+		this.controller = new PurchaseController();
 		this.filteredItems = computed(() => this.controller.getFilteredItems());
 	}
 
 	addItem(text: string) {
-		console.log("addItem", text);
 		this.controller.addItem(text);
 	}
 
@@ -20,8 +19,8 @@ export class PurchaseListUI {
 	}
 
 	removeItem(id: number) {
-		console.log("removeItem", id);
 		this.controller.removeItem(id);
+		this.showNotification("remove");
 	}
 
 	undoAction() {
@@ -30,9 +29,16 @@ export class PurchaseListUI {
 
 	clearList() {
 		this.controller.clearList();
+		this.showNotification("clear");
 	}
 
 	setFilter(filter: "all" | "done" | "undone") {
 		this.controller.setFilter(filter);
+	}
+
+	showNotification(sType: "remove" | "clear", iTimeout=5000) {
+		if (this.undoNotifications.value) {
+            this.undoNotifications.value.show(sType, iTimeout);
+        }
 	}
 }

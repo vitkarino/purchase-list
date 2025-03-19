@@ -10,9 +10,10 @@
 }
 
 .app__header {
-	display: flex;
+	@include flex-center;
 	justify-content: space-between;
 	font-size: 14pt;
+	gap: 2em;
 
 	.button_submit {
 		@include icon-button;
@@ -21,6 +22,8 @@
 
 .header__form {
 	@include flex-center;
+	align-items: stretch;
+	flex-grow: 1;
 	gap: 0.325em;
 }
 
@@ -28,7 +31,7 @@
 	@include transition;
 	font-size: 10pt;
 	padding-inline: 2em;
-	height: 36px;
+	flex-grow: 1;
 	border: none;
 	border-radius: 50px;
 	outline: none;

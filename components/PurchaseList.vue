@@ -4,7 +4,7 @@
 			No items found.
 		</div>
 		<ListItem
-			v-for="item in props.items"
+			v-for="item in items"
 			:key="item.id"
 			:item="item"
 			@remove="ui.removeItem(item.id)"
@@ -12,22 +12,20 @@
 		/>
 	</div>
 	<ListMenu @setFilter="ui.setFilter($event)" @clear="ui.clearList()" />
-	<UndoNotification
-		:show="controller.showUndoNotification.value"
-		:type="controller.notificationType.value"
-		@undo="ui.undoAction()"
-	/>
+	<UndoNotifications ref="undoNotifications" @undo="ui.undoAction()"/>
 </template>
 
 <script setup lang="ts">
-import { PurchaseItem } from "~/models/PurchaseModel";
-import { PurchaseStore } from "~/stores/PurchaseStore";
+import { PurchaseListUI } from "~/ui/PurchaseListUI"; 
 
-const props = defineProps<{ items: PurchaseItem[] }>();
+// const props = defineProps<{ items: PurchaseItem[] }>();
+const ui = new PurchaseListUI();
+const items = computed(() => ui.filteredItems.value);
+const undoNotifications = ref(null);
 
-const store = PurchaseStore.getInstance();
-const ui = store.getUI();
-const controller = store.getController();
+onMounted(() => {
+  ui.undoNotifications = undoNotifications;
+});
 </script>
 
 <style scoped lang="scss">
