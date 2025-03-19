@@ -17,18 +17,20 @@
 				</button>
 			</form>
 		</header>
-		<slot />
+		<PurchaseList ref="purchaseListRef" />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import PurchaseList from "~/components/PurchaseList.vue";
 
+const purchaseListRef = ref<InstanceType<typeof PurchaseList> | null>(null);
 const inputText = ref("");
 
 function handleAdd() {
-	if (inputText.value.trim() !== "") {
-		ui.addItem(inputText.value.trim());
+	if (inputText.value.trim() !== "" && purchaseListRef.value) {
+		purchaseListRef.value.addItem(inputText.value.trim());
 		inputText.value = "";
 	}
 }

@@ -1,1 +1,17 @@
-{}
+{
+  "10": {
+    "id": 10,
+    "text": "bread",
+    "completed": false
+  },
+  "11": {
+    "id": 11,
+    "text": "butter",
+    "completed": true
+  },
+  "18": {
+    "id": 18,
+    "text": "pizza",
+    "completed": false
+  }
+}

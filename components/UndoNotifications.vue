@@ -14,20 +14,23 @@ const show = ref(false);
 const notificationType = ref<"remove" | "clear">("remove");
 
 const message = computed(() => {
-  return notificationType.value === "clear" ? "List cleared" : "Item removed";
+	return notificationType.value === "clear" ? "List cleared" : "Item removed";
 });
 
 defineEmits(["undo"]);
 
 defineExpose({
-  show(type: "remove" | "clear", timeoutMs: number = 5000) {
-    notificationType.value = type;
-    show.value = true;
-    
-    setTimeout(() => {
-      show.value = false;
-    }, timeoutMs);
-  }
+	show(type: "remove" | "clear", timeoutMs: number = 5000) {
+		notificationType.value = type;
+		show.value = true;
+
+		setTimeout(() => {
+			show.value = false;
+		}, timeoutMs);
+	},
+	hide() {
+		show.value = false;
+	},
 });
 </script>
 

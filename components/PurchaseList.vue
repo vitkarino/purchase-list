@@ -12,19 +12,23 @@
 		/>
 	</div>
 	<ListMenu @setFilter="ui.setFilter($event)" @clear="ui.clearList()" />
-	<UndoNotifications ref="undoNotifications" @undo="ui.undoAction()"/>
+	<UndoNotifications ref="undoNotifications" @undo="ui.undoAction()" />
 </template>
 
 <script setup lang="ts">
-import { PurchaseListUI } from "~/ui/PurchaseListUI"; 
+import { ref, computed, onMounted } from "vue";
+import { PurchaseListUI } from "~/ui/PurchaseListUI";
 
-// const props = defineProps<{ items: PurchaseItem[] }>();
 const ui = new PurchaseListUI();
 const items = computed(() => ui.filteredItems.value);
 const undoNotifications = ref(null);
 
 onMounted(() => {
-  ui.undoNotifications = undoNotifications;
+	ui.undoNotifications = undoNotifications;
+});
+
+defineExpose({
+	addItem: (text: string) => ui.addItem(text),
 });
 </script>
 

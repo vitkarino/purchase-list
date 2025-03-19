@@ -6,23 +6,32 @@ const baseUrl = import.meta.server ? "http://localhost:3000" : "";
 export class PurchaseController {
 	public items = reactive<PurchaseItem[]>([]);
 	public filter = ref<"all" | "done" | "undone">("all");
-	public lastRemovedItem = ref<{ item: PurchaseItem; index: number } | null>(
-		null
-	);
 
 	constructor() {
 		this.fetchItems();
 	}
 
+	private customFetch<T = any>(method: string, body?: any): Promise<T> {
+		return fetch(`${baseUrl}/api/PurchaseListAPI`, {
+			method,
+			headers: { "Content-Type": "application/json" },
+			body: body ? JSON.stringify(body) : undefined,
+		}).then((response) => response.json());
+	}
+
 	fetchItems() {
-		fetch(`${baseUrl}/api/PurchaseListAPI`)
-			.then((response) => response.json())
+		this.customFetch("GET")
 			.then((data) => {
-				this.items.splice(
-					0,
-					this.items.length,
-					...(Object.values(data) as PurchaseItem[])
-				);
+				this.items.splice(0, this.items.length);
+				if (!Array.isArray(data)) {
+					for (const key in data) {
+						this.items.push(new PurchaseItem(data[key]));
+					}
+				} else {
+					this.items.push(
+						...data.map((item) => new PurchaseItem(item))
+					);
+				}
 			})
 			.catch((error) => {
 				console.error("Fetch error:", error);
@@ -30,14 +39,9 @@ export class PurchaseController {
 	}
 
 	addItem(text: string) {
-		fetch(`${baseUrl}/api/PurchaseListAPI`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ text }),
-		})
-			.then((response) => response.json())
+		this.customFetch("POST", { text })
 			.then((newItem) => {
-				this.items.push(newItem);
+				this.items.push(new PurchaseItem(newItem));
 			})
 			.catch((error) => {
 				console.error("Fetch error:", error);
@@ -45,14 +49,11 @@ export class PurchaseController {
 	}
 
 	toggleItem(id: number) {
-		fetch(`${baseUrl}/api/PurchaseListAPI`, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ id }),
-		})
-			.then((response) => response.json())
+		this.customFetch("PUT", { id })
 			.then((updatedItem) => {
-				const index = this.items.findIndex((i) => i.id === updatedItem.id);
+				const index = this.items.findIndex(
+					(i) => i.id === updatedItem.id
+				);
 				if (index !== -1) {
 					this.items[index] = new PurchaseItem(updatedItem);
 				}
@@ -62,98 +63,32 @@ export class PurchaseController {
 			});
 	}
 
-	removeItem(id: number) {
-		const index = this.items.findIndex((i) => i.id === id);
-		if (index === -1) return;
-	
-		// Store the item for potential undo
-		this.lastRemovedItem.value = { 
-		  item: { ...this.items[index] }, 
-		  index 
-		};
-	
-		fetch(`${baseUrl}/api/PurchaseListAPI`, {
-		  method: "DELETE",
-		  headers: { "Content-Type": "application/json" },
-		  body: JSON.stringify({ id }),
-		})
-		  .then(() => {
-			this.items.splice(index, 1);
-		  })
-		  .catch((error) => {
-			console.error("Fetch error:", error);
-		  });
-		
-		// Return the notification type so UI can handle it
-		return "remove";
-	  }
+	hideItems(ids: number[]) {
+		for (const id of ids) {
+			const index = this.items.findIndex((i) => i.id === id);
+			if (index !== -1) {
+				this.items.splice(index, 1);
+			}
+		}
+	}
 
-	// undoAction() {
-	// 	if (this.notificationType.value === "clear") {
-	// 		if (!this.lastClearedItems.value.length) return;
+	hideAllItems() {
+		this.items.splice(0, this.items.length);
+	}
 
-	// 		const promises = this.lastClearedItems.value.map((item) =>
-	// 			fetch(`${baseUrl}/api/PurchaseListAPI`, {
-	// 				method: "POST",
-	// 				headers: { "Content-Type": "application/json" },
-	// 				body: JSON.stringify({
-	// 					text: item.text,
-	// 					completed: item.completed,
-	// 				}),
-	// 			}).then((response) => response.json())
-	// 		);
+	customDeleteItem(id: number) {
+		this.customFetch("DELETE", { action: "remove", id }).catch((error) => {
+			console.error("Delete error:", error);
+			this.fetchItems();
+		});
+	}
 
-	// 		Promise.all(promises)
-	// 			.then((restoredItems) => {
-	// 				this.items.splice(0, this.items.length, ...restoredItems);
-	// 				this.showUndoNotification.value = false;
-	// 				this.lastClearedItems.value = [];
-	// 			})
-	// 			.catch((error) => console.error("Undo clear error:", error));
-	// 	} else if (this.notificationType.value === "remove") {
-	// 		if (!this.lastRemovedItem.value) return;
-
-	// 		const { item, index } = this.lastRemovedItem.value;
-
-	// 		fetch(`${baseUrl}/api/PurchaseListAPI`, {
-	// 			method: "POST",
-	// 			headers: { "Content-Type": "application/json" },
-	// 			body: JSON.stringify({
-	// 				text: item.text,
-	// 				completed: item.completed,
-	// 			}),
-	// 		})
-	// 			.then((response) => response.json())
-	// 			.then((restoredItem) => {
-	// 				const insertPosition = Math.min(index, this.items.length);
-	// 				this.items.splice(insertPosition, 0, restoredItem);
-	// 				this.showUndoNotification.value = false;
-	// 				this.lastRemovedItem.value = null;
-	// 			})
-	// 			.catch((error) => console.error("Undo remove error:", error));
-	// 	}
-	// }
-
-	clearList() {
-		if (!window.confirm("Do you want to clear the purchase list?")) return;
-	
-		this.lastClearedItems.value = [...this.items];
-	
-		fetch(`${baseUrl}/api/PurchaseListAPI`, {
-		  method: "DELETE",
-		  headers: { "Content-Type": "application/json" },
-		  body: JSON.stringify({ action: "clear" }),
-		})
-		  .then(() => {
-			this.items.splice(0, this.items.length);
-		  })
-		  .catch((error) => {
-			console.error("Fetch error:", error);
-		  });
-		
-		// Return the notification type so UI can handle it
-		return "clear";
-	  }
+	customClearList() {
+		this.customFetch("DELETE", { action: "clear" }).catch((error) => {
+			console.error("Clear error:", error);
+			this.fetchItems();
+		});
+	}
 
 	setFilter(filter: "all" | "done" | "undone") {
 		this.filter.value = filter;
