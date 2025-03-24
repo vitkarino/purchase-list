@@ -20,19 +20,12 @@ const message = computed(() => {
 defineEmits(["undo"]);
 
 defineExpose({
-	show(type: "remove" | "clear", timeoutMs: number = 5000) {
+	show(type: "remove" | "clear") {
 		notificationType.value = type;
 		show.value = true;
-
-		setTimeout(() => {
-			show.value = false;
-		}, timeoutMs);
 	},
 	hide() {
 		show.value = false
-	},
-	unhide() {
-		show.value = true;
 	}
 });
 </script>
