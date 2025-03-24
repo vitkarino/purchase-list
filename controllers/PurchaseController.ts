@@ -63,18 +63,28 @@ export class PurchaseController {
 			});
 	}
 
-	hideItems(ids: number[]) {
-		for (const id of ids) {
-			const index = this.items.findIndex((i) => i.id === id);
-			if (index !== -1) {
-				this.items.splice(index, 1);
-			}
-		}
-	}
+	toggleItemsVisibility(ids: number[]) {
+        for (const id of ids) {
+            const index = this.items.findIndex((i) => i.id === id);
+            if (index !== -1) {
+                // Toggle the visibility state
+                this.items[index].isVisible = !this.items[index].isVisible;
+            }
+        }
+    }
 
-	hideAllItems() {
-		this.items.splice(0, this.items.length);
-	}
+	// hideItems(ids: number[]) {
+	// 	for (const id of ids) {
+	// 		const index = this.items.findIndex((i) => i.id === id);
+	// 		if (index !== -1) {
+	// 			this.items.splice(index, 1);
+	// 		}
+	// 	}
+	// }
+
+	// hideAllItems() {
+	// 	this.items.splice(0, this.items.length);
+	// }
 
 	customDeleteItem(id: number) {
 		this.customFetch("DELETE", { action: "remove", id }).catch((error) => {
@@ -96,6 +106,7 @@ export class PurchaseController {
 
 	getFilteredItems() {
 		return this.items.filter((item) => {
+			if (!item.isVisible) return false;
 			if (this.filter.value === "done") return item.completed;
 			if (this.filter.value === "undone") return !item.completed;
 			return true;

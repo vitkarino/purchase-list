@@ -29,8 +29,11 @@ defineExpose({
 		}, timeoutMs);
 	},
 	hide() {
-		show.value = false;
+		show.value = false
 	},
+	unhide() {
+		show.value = true;
+	}
 });
 </script>
 

@@ -25,69 +25,151 @@ export class PurchaseListUI {
 	}
 
 	removeItem(id: number) {
-		this.hideItems([id], "remove")
-			.then(() => this.showNotification("remove"))
-			.then((confirmed) => {
-				if (!confirmed) {
-					this.controller.fetchItems();
-				} else {
-					this.controller.customDeleteItem(id);
-				}
-			});
+		this.pendingItems.value = { ids: [id], type: "remove" };
+		this.toggleItemsVisibility([id])
+            .then(() => this.showNotification("remove"))
+            .then((confirmed) => {
+                if (confirmed) {
+                    this.controller.customDeleteItem(id);
+                } else {
+                    // Toggle visibility back if not confirmed
+                    this.toggleItemsVisibility([id]);
+                }
+        });
+		// this.hideItems([id])
+		// 	.then(() => this.showNotification("remove"))
+		// 	.then((confirmed) => {
+		// 		if (confirmed) {
+		// 			this.controller.customDeleteItem(id);
+		// 		} else {
+		// 			this.controller
+		// 		}
+		// 		// if (!confirmed) {
+		// 		// 	this.controller.fetchItems();
+		// 		// } else {
+					
+		// 		// }
+		// 	});
 	}
 
 	undoAction() {
-		if (this.notificationTimeout) {
-			clearTimeout(this.notificationTimeout);
-			this.notificationTimeout = null;
+        if (this.notificationTimeout) {
+            clearTimeout(this.notificationTimeout);
+            this.notificationTimeout = null;
 
-			this.controller.fetchItems();
+            // Toggle visibility back for pending items
+            this.toggleItemsVisibility(this.pendingItems.value.ids);
+            this.pendingItems.value = { ids: [], type: "remove" };
 
-			if (this.undoNotifications.value) {
-				this.undoNotifications.value.hide();
-			}
-		}
-	}
+            if (this.undoNotifications.value) {
+                this.undoNotifications.value.hide();
+            }
+        }
+    }
+
+	// undoAction() {
+	// 	if (this.notificationTimeout) {
+	// 		clearTimeout(this.notificationTimeout);
+	// 		this.notificationTimeout = null;
+
+	// 		// Unecessary fetch method
+	// 		// this.controller.fetchItems();
+	// 		// this.controller.unhideItems(this.pendingItems.value.ids);
+	// 		// this.pendingItems.value = { ids: [], type: "remove" };
+
+	// 		if (this.undoNotifications.value) {
+	// 			this.undoNotifications.value.hide();
+	// 		}
+	// 	}
+	// }
+
+	// clearList() {
+	// 	// const itemIds = this.controller
+	// 	// 	.getFilteredItems()
+	// 	// 	.map((item) => item.id);
+
+	// 	if (itemIds.length === 0) return;
+
+	// 	if (window.confirm("Are you sure you want to clear the list?")) {
+	// 		this.hideItems()
+	// 			.then(() => this.showNotification("clear"))
+	// 			.then((confirmed) => {
+	// 				// Unecessary fetch method removed
+	// 				// if (confirmed) {
+	// 				// 	this.controller.fetchItems();
+	// 				// } else {
+	// 				// 	this.controller.customClearList();
+	// 				// }
+
+	// 				this.controller.customClearList();
+	// 			});
+	// 	}
+	// }
+
+	// clearList() {
+	// 	const itemIds = this.controller.getFilteredItems().map((item) => item.id);
+	// 	if (itemIds.length === 0) return;
+
+	// 	if (window.confirm("Are you sure you want to clear the list?")) {
+	// 		// this.pendingItems.value = { ids: itemIds, type: "clear" };
+	// 		this.hideItems()
+	// 			.then(() => this.showNotification("clear"))
+	// 			.then((confirmed) => {
+	// 				if (confirmed) {
+	// 					this.controller.customClearList();
+	// 				}
+	// 			});
+	// 	}
+	// }
 
 	clearList() {
-		const itemIds = this.controller
-			.getFilteredItems()
-			.map((item) => item.id);
+        const itemIds = this.controller.getFilteredItems().map((item) => item.id);
+        if (itemIds.length === 0) return;
 
-		if (itemIds.length === 0) return;
-
-		if (window.confirm("Are you sure you want to clear the list?")) {
-			this.hideItems(itemIds, "clear")
-				.then(() => this.showNotification("clear"))
-				.then((confirmed) => {
-					if (!confirmed) {
-						this.controller.fetchItems();
-					} else {
-						this.controller.customClearList();
-					}
-				});
-		}
-	}
+        if (window.confirm("Are you sure you want to clear the list?")) {
+            this.pendingItems.value = { ids: itemIds, type: "clear" };
+            this.toggleItemsVisibility()
+                .then(() => this.showNotification("clear"))
+                .then((confirmed) => {
+                    if (confirmed) {
+                        this.controller.customClearList();
+                    } else {
+                        // Toggle visibility back if not confirmed
+                        this.toggleItemsVisibility();
+                    }
+                });
+        }
+    }
 
 	setFilter(filter: "all" | "done" | "undone") {
 		this.controller.setFilter(filter);
 	}
 
-	private hideItems(ids: number[], type: "remove" | "clear"): Promise<void> {
+	toggleItemsVisibility(ids?: number[]): Promise<void> {
 		return new Promise((resolve) => {
-			this.pendingItems.value = { ids, type };
-
-			if (type === "remove") {
-				this.controller.hideItems(ids);
-			} else if (type === "clear") {
-				this.controller.hideAllItems();
+			if (ids && ids.length > 0) {
+				this.controller.toggleItemsVisibility(ids);
+			} else {
+				const allItemIds = this.controller.getFilteredItems().map((item) => item.id);
+				this.controller.toggleItemsVisibility(allItemIds);
 			}
-
 			resolve();
 		});
 	}
 
-	private showNotification(
+	// private hideItems(ids?: number[]): Promise<void> {
+	// 	return new Promise((resolve) => {
+	// 		if (ids && ids.length > 0) {
+	// 			this.controller.hideItems(ids);
+	// 		} else {
+	// 			const allItemIds = this.controller.getFilteredItems().map((item) => item.id);
+	// 			this.controller.hideItems(allItemIds);
+	// 		}
+	// 		resolve();
+	// 	});
+	// }
+
+	showNotification(
 		sType: "remove" | "clear",
 		iTimeout = 5000
 	): Promise<boolean> {
