@@ -4,7 +4,6 @@ import { PurchaseItem } from "~/models/PurchaseModel";
 const baseUrl = import.meta.server ? "http://localhost:3000" : "";
 
 export class PurchaseController {
-    // Object with string keys (item IDs) and PurchaseItem values
     public items = reactive<Record<string, PurchaseItem>>({});
     public filter = ref<"all" | "done" | "undone">("all");
 
@@ -23,11 +22,9 @@ export class PurchaseController {
     fetchItems() {
         this.fetch("GET")
             .then((data) => {
-                // Clear existing items
                 for (const key in this.items) {
                     delete this.items[key];
                 }
-                // Assume data is an object with string keys and PurchaseItem-like values
                 for (const key in data) {
                     this.items[key] = new PurchaseItem(data[key]);
                 }
@@ -70,17 +67,17 @@ export class PurchaseController {
         }
     }
 
-    removeItems(ids: number[]) {
-        this.fetch("DELETE", { action: "remove", ids })
+    removeItems(id: number) {
+        this.fetch("DELETE", { action: "remove", id })
             .then(() => {
-                ids.forEach((id) => {
-                    const key = id.toString();
+                // id.forEach((id) => {
+                    const key = id.toString()
                     delete this.items[key];
-                });
+                // });
             })
             .catch((error) => {
                 console.error("Delete error:", error);
-                this.fetchItems();
+                // this.fetchItems();
             });
     }
 
@@ -93,7 +90,7 @@ export class PurchaseController {
             })
             .catch((error) => {
                 console.error("Clear error:", error);
-                this.fetchItems();
+                // this.fetchItems();
             });
     }
 
@@ -103,10 +100,15 @@ export class PurchaseController {
 
     getFilteredItems(): PurchaseItem[] {
         return Object.values(this.items).filter((item: PurchaseItem) => {
-            if (!item.isVisible) return false;
-            if (this.filter.value === "done") return item.completed;
-            if (this.filter.value === "undone") return !item.completed;
-            return true;
+            // if (!item.isVisible) {
+            //     return false;
+            // } 
+            if (this.filter.value === "done") {
+                return item.completed;
+            } else {
+                return !item.completed;
+            }
+
         });
     }
 }

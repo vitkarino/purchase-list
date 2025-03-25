@@ -20,8 +20,7 @@ const message = computed(() => {
 defineEmits(["undo"]);
 
 defineExpose({
-	show(type: "remove" | "clear") {
-		notificationType.value = type;
+	show() {
 		show.value = true;
 	},
 	hide() {
