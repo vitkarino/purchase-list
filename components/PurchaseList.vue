@@ -28,6 +28,7 @@ onMounted(() => {
 });
 
 defineExpose({
+	ui,
 	addItem: (text: string) => ui.addItem(text),
 });
 </script>

@@ -82,11 +82,13 @@ class PurchaseListAPI {
 		});
 	}
 
-	deleteItem(id: number) {
+	deleteItems(ids: number[]) {
 		return (
 			!this.initialized ? this.initializeList() : Promise.resolve()
 		).then(() => {
-			delete this.purchaseList[id];
+			for (const id of ids) {
+				delete this.purchaseList[id];
+			}
 			return this.savePurchaseList().then(() => ({ success: true }));
 		});
 	}
@@ -127,8 +129,8 @@ export default defineEventHandler((event) => {
 			if (body && body.action === "clear") {
 				return purchaseListService.clearList();
 			}
-			if (body && body.id) {
-				return purchaseListService.deleteItem(body.id);
+			if (body && body.action === "remove" && Array.isArray(body.ids)) {
+				return purchaseListService.deleteItems(body.ids);
 			}
 		});
 	}

@@ -1,5 +1,6 @@
 import { PurchaseController } from "~/controllers/PurchaseController";
-import { computed, ref } from "vue";
+import PurchaseList from "~/components/PurchaseList.vue";
+import { computed, Ref } from "vue";
 
 export class PurchaseListUI {
 	private controller: PurchaseController;
@@ -7,14 +8,16 @@ export class PurchaseListUI {
 	public undoNotifications: any = null;
 	private hiddenItems: number[] = [];
 	private notificationTimeout: ReturnType<typeof setTimeout> | null = null;
-
+	
 	constructor() {
 		this.controller = new PurchaseController();
 		this.filteredItems = computed(() => this.controller.getFilteredItems());
 	}
 
-	addItem(text: string) {
+	addItem(element: Ref<HTMLInputElement | null>) {
+		const text = element.value;
 		this.controller.addItem(text);
+		PurchaseList.inputText.value = "";
 	}
 
 	toggleItem(id: number) {
@@ -28,9 +31,9 @@ export class PurchaseListUI {
 		this.showNotification("remove").then((confirmed) => {
 			if (confirmed) {
 				this.controller.removeItem(this.hiddenItems);
-			  } else {
+			} else {
 				this.controller.showItem(this.hiddenItems);
-			  }
+			}
 		});
 	}
 
@@ -43,7 +46,7 @@ export class PurchaseListUI {
 				this.undoNotifications.value.hide();
 				this.showItem(this.hiddenItems);
 				this.hiddenItems = [];
-			}	
+			}
 		}
 	}
 
@@ -91,7 +94,6 @@ export class PurchaseListUI {
 			resolve();
 		});
 	}
-
 
 	showNotification(
 		sType: "remove" | "clear",

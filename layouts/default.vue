@@ -2,8 +2,12 @@
 	<div class="wrapper">
 		<header class="header app__header">
 			<p class="header__title">Shopping List</p>
-			<form class="header__form" @submit.prevent="handleAdd">
+			<form
+				class="header__form"
+				@submit.prevent="purchaseListRef?.addItem(inputText.trim())"
+			>
 				<input
+					ref="inputRef"
 					v-model="inputText"
 					type="text"
 					class="form__input"
@@ -22,18 +26,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import PurchaseList from "~/components/PurchaseList.vue";
+import { PurchaseListUI } from "~/ui/PurchaseListUI";
 
 const purchaseListRef = ref<InstanceType<typeof PurchaseList> | null>(null);
 const inputText = ref("");
+const inputRef = ref<HTMLInputElement | null>(null);
 
-function handleAdd() {
-	if (inputText.value.trim() !== "" && purchaseListRef.value) {
-		purchaseListRef.value.addItem(inputText.value.trim());
-		inputText.value = "";
+onMounted(() => {
+	if (inputRef.value) {
+		PurchaseListUI(inputRef);
 	}
-}
+});
+
+// function handleAdd() {
+// 	if (inputText.value.trim() !== "" && purchaseListRef.value) {
+// 		purchaseListRef.value.addItem(inputText.value.trim());
+// 		inputText.value = "";
+// 	}
+// }
 </script>
 
 <style lang="scss">
