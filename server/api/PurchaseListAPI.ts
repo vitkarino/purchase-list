@@ -4,11 +4,11 @@ import path from "path";
 class PurchaseListAPI {
 	private purchaseList: Record<
 		number,
-		{ id: number; text: string; completed: boolean }
+		{ id: number; text: string; completed: boolean; hide: boolean }
 	> = {
-		1: { id: 1, text: "Milk", completed: false },
-		2: { id: 2, text: "Bread", completed: true },
-		3: { id: 3, text: "Butter", completed: false },
+		1: { id: 1, text: "Milk", completed: false, hide: false },
+		2: { id: 2, text: "Bread", completed: true, hide: false },
+		3: { id: 3, text: "Butter", completed: false, hide: false },
 	};
 	private lastId = 3;
 	private initialized = false;
@@ -59,11 +59,11 @@ class PurchaseListAPI {
 		return Promise.resolve(this.purchaseList);
 	}
 
-	addItem(text: any, completed: boolean = false) {
+	addItem(text: any, completed: boolean = false, hide: boolean = false) {
 		return (
 			!this.initialized ? this.initializeList() : Promise.resolve()
 		).then(() => {
-			const newItem = { id: ++this.lastId, text, completed };
+			const newItem = { id: ++this.lastId, text, completed, hide };
 			this.purchaseList[newItem.id] = newItem;
 			return this.savePurchaseList().then(() => newItem);
 		});

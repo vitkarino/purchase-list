@@ -1,7 +1,14 @@
 {
-  "1": {
-    "id": 1,
-    "text": "asd",
-    "completed": false
+  "74": {
+    "id": 74,
+    "text": "te1",
+    "completed": false,
+    "hide": false
+  },
+  "77": {
+    "id": 77,
+    "text": "23",
+    "completed": false,
+    "hide": false
   }
 }

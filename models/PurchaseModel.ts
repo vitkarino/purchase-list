@@ -2,17 +2,17 @@ export class PurchaseItem {
 	id;
 	text;
 	completed;
-	isVisible;
+	hide;
 
 	constructor(oPurchaseItem: {
 		id: number;
 		text: string;
 		completed?: boolean;
-		isVisible?: boolean;
+		hide?: boolean;
 	}) {
 		this.id = oPurchaseItem.id;
 		this.text = oPurchaseItem.text;
 		this.completed = oPurchaseItem.completed ?? false;
-		this.isVisible = oPurchaseItem.isVisible ?? true;
+		this.hide = oPurchaseItem.hide ?? false;
 	}
 }
