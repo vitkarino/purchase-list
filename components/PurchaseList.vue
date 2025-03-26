@@ -27,10 +27,11 @@ onMounted(() => {
 	ui.undoNotifications = undoNotifications;
 });
 
-defineExpose({
-	ui,
-	addItem: (text: string) => ui.addItem(text),
-});
+// defineExpose({
+// 	ui,
+// 	addItem: (text: string) => ui.addItem(text),
+// });
+defineExpose(ui);
 </script>
 
 <style scoped lang="scss">

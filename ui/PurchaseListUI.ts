@@ -1,6 +1,6 @@
 import { PurchaseController } from "~/controllers/PurchaseController";
 import PurchaseList from "~/components/PurchaseList.vue";
-import { computed, Ref } from "vue";
+import { computed } from "vue";
 
 export class PurchaseListUI {
 	private controller: PurchaseController;
@@ -8,17 +8,23 @@ export class PurchaseListUI {
 	public undoNotifications: any = null;
 	private hiddenItems: number[] = [];
 	private notificationTimeout: ReturnType<typeof setTimeout> | null = null;
-	
+
 	constructor() {
 		this.controller = new PurchaseController();
 		this.filteredItems = computed(() => this.controller.getFilteredItems());
 	}
 
-	addItem(element: Ref<HTMLInputElement | null>) {
-		const text = element.value;
-		this.controller.addItem(text);
-		PurchaseList.inputText.value = "";
-	}
+	// addItem(element: Ref<HTMLInputElement | null>) {
+	// 	const text = element.value;
+	// 	this.controller.addItem(text);
+	// 	PurchaseList.inputText.value = "";
+	// }
+
+	addItem(inputText: string) {
+		if (inputText.trim()) {
+		  this.controller.addItem(inputText);
+		}
+	  }
 
 	toggleItem(id: number) {
 		this.controller.toggleItem(id);
