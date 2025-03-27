@@ -1,6 +1,6 @@
 <template>
 	<div class="app">
-		<PurchaseList />
+		<!-- <PurchaseList /> -->
 	</div>
 </template>
 

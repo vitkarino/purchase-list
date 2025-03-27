@@ -1,5 +1,5 @@
 <template>
-	<div class="list-menu">
+	<div class="purchase-items-menu">
 		<div class="sort-controls">
 			<label class="button button_radio">
 				<input
@@ -47,5 +47,5 @@ watch(currentFilter, (newFilter) => {
 </script>
 
 <style lang="scss">
-@use "~/assets/scss/ListMenu.scss";
+@use "~/assets/scss/PurchaseItemsMenu.scss";
 </style>

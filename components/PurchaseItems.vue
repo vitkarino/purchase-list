@@ -1,9 +1,9 @@
 <template>
-	<div class="purchase-list">
+	<div class="purchase-items">
 		<div v-if="items.length === 0" class="empty-list-message">
 			No items found.
 		</div>
-		<ListItem
+		<PurchaseItem
 			v-for="item in items"
 			:key="item.id"
 			:item="item"
@@ -11,7 +11,7 @@
 			@toggle="ui.toggleItem(item.id)"
 		/>
 	</div>
-	<ListMenu @setFilter="ui.setFilter($event)" @clear="ui.clearList()" />
+	<PurchaseItemsMenu @setFilter="ui.setFilter($event)" @clear="ui.clearList()" />
 	<UndoNotifications ref="undoNotifications" @undo="ui.undoAction()" />
 </template>
 
@@ -19,7 +19,11 @@
 import { ref, computed, onMounted } from "vue";
 import { PurchaseListUI } from "~/ui/PurchaseListUI";
 
-const ui = new PurchaseListUI();
+const props = defineProps<{
+	ui: PurchaseListUI
+}>();
+
+const { ui } = props;
 const items = computed(() => ui.filteredItems.value);
 const undoNotifications = ref(null);
 
@@ -31,9 +35,9 @@ onMounted(() => {
 // 	ui,
 // 	addItem: (text: string) => ui.addItem(text),
 // });
-defineExpose({ui});
+// defineExpose({ui});
 </script>
 
 <style scoped lang="scss">
-@use "~/assets/scss/PurchaseList.scss" as *;
+@use "~/assets/scss/PurchaseItems.scss" as *;
 </style>

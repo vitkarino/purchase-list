@@ -1,7 +1,7 @@
 @use "variables" as *;
 @use "mixins" as *;
 
-.list-menu {
+.purchase-items-menu {
 	@include flex-column;
 	gap: 1em 0;
 	width: fit-content;

@@ -8,21 +8,18 @@ export class PurchaseListUI {
 	private hiddenItems: number[] = [];
 	private notificationTimeout: ReturnType<typeof setTimeout> | null = null;
 	
-	public model = reactive({
-		newItem: "",
-	});
+	// public model = reactive({
+	// 	newItem: "",
+	// });
 
 	constructor() {
 		this.controller = new PurchaseController();
 		this.filteredItems = computed(() => this.controller.getFilteredItems());
 	}
 
-	addItem(inputValue: string) {
-		debugger
-		if (inputValue.trim()) {
-			this.controller.addItem(inputValue);
-			this.inputValue.value = "";
-		}
+	addItem(text: string) {
+		this.controller.addItem(text);
+		// this.text.newItem = "";
 	}
 
 	toggleItem(id: number) {
@@ -102,7 +99,7 @@ export class PurchaseListUI {
 
 	showNotification(
 		sType: "remove" | "clear",
-		timeoutMs = 2000
+		timeoutMs = 5000
 	): Promise<boolean> {
 		return new Promise((resolve) => {
 			if (this.undoNotifications.value) {

@@ -1,14 +1,16 @@
 <template>
-	<div class="wrapper">
-		<header class="header app__header">
+	<div class="purchase-list">
+		<header class="header purchase-list__header">
 			<p class="header__title">Shopping List</p>
 			<form
 				class="header__form"
-				@submit.prevent="ui?.addItem(inputValue)"
+				@submit.prevent="
+					ui.addItem(inputValue);
+					inputValue = '';
+				"
 			>
 				<input
-					ref="inputValue"
-					v-model="model.newItem"
+					v-model="inputValue"
 					type="text"
 					class="form__input"
 					placeholder="Add new item"
@@ -21,27 +23,33 @@
 				</button>
 			</form>
 		</header>
-		<PurchaseList ref="purchaseListRef" />
+		<!-- PurchaseList renames to PurchaseItems -->
+		<PurchaseItems ref="purchaseItemsRef" :ui="ui" />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import PurchaseList from "~/components/PurchaseList.vue";
+import PurchaseItems from "~/components/PurchaseItems.vue";
+import { PurchaseListUI } from "~/ui/PurchaseListUI";
 
 const inputValue = ref("");
-const purchaseListRef = ref<InstanceType<typeof PurchaseList> | null>(null);
+const purchaseItemsRef = ref<InstanceType<typeof PurchaseItems> | null>(null);
 
-const model = reactive({
-	newItem: "",
-});
+const ui = new PurchaseListUI();
 
-let ui = purchaseListRef;
-debugger;
+// const model = reactive({
+// 	newItem: "",
+// });
 
-onMounted(() => {
-	ui = purchaseListRef.value!.ui;
-});
+// let ui = purchaseListRef;
+// debugger;
+
+// const ui = new PurchaseListUI();
+
+// onMounted(() => {
+// 	ui = purchaseListRef.value!.ui;
+// });
 </script>
 
 <style lang="scss">

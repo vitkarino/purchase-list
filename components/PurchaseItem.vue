@@ -1,5 +1,5 @@
 <template>
-	<div class="list-item" :class="{ item_completed: item.completed }">
+	<div class="purchase-item" :class="{ item_completed: item.completed }">
 		<button class="button button_checkbox" @click="emit('toggle', item.id)">
 			<Icon
 				v-if="item.completed"
@@ -24,5 +24,5 @@ const emit = defineEmits(["toggle", "remove"]);
 </script>
 
 <style scoped lang="scss">
-@use "~/assets/scss/ListItem.scss";
+@use "~/assets/scss/PurchaseItem.scss";
 </style>
