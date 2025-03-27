@@ -4,11 +4,11 @@
 			<p class="header__title">Shopping List</p>
 			<form
 				class="header__form"
-				@submit.prevent="purchaseListRef?.addItem(inputText)"
+				@submit.prevent="ui?.addItem(inputValue)"
 			>
 				<input
-					ref="inputRef"
-					v-model="inputText"
+					ref="inputValue"
+					v-model="model.newItem"
 					type="text"
 					class="form__input"
 					placeholder="Add new item"
@@ -26,15 +26,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import PurchaseList from "~/components/PurchaseList.vue";
 
+const inputValue = ref("");
 const purchaseListRef = ref<InstanceType<typeof PurchaseList> | null>(null);
-const inputText = ref("");
-const inputRef = ref<HTMLInputElement | null>(null);
+
+const model = reactive({
+	newItem: "",
+});
+
+let ui = purchaseListRef;
+debugger;
 
 onMounted(() => {
-	purchaseListRef.value;
+	ui = purchaseListRef.value!.ui;
 });
 </script>
 

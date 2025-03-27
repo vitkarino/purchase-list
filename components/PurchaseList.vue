@@ -31,7 +31,7 @@ onMounted(() => {
 // 	ui,
 // 	addItem: (text: string) => ui.addItem(text),
 // });
-defineExpose(ui);
+defineExpose({ui});
 </script>
 
 <style scoped lang="scss">
