@@ -7,25 +7,23 @@ export class PurchaseListUI {
 	public undoNotifications: any = null;
 	private hiddenItems: number[] = [];
 	private notificationTimeout: ReturnType<typeof setTimeout> | null = null;
-	
-	// public model = reactive({
-	// 	newItem: "",
-	// });
 
 	constructor() {
 		this.controller = new PurchaseController();
 		this.filteredItems = computed(() => this.controller.getFilteredItems());
 	}
 
+	// Add a new item to the list
 	addItem(text: string) {
 		this.controller.addItem(text);
-		// this.text.newItem = "";
 	}
 
+	// Toggle the completed status of an item
 	toggleItem(id: number) {
 		this.controller.toggleItem(id);
 	}
 
+	// Remove an item from the list and show an undo notification
 	removeItem(id: number) {
 		this.hiddenItems.push(id);
 		this.controller.hideItem(this.hiddenItems);
@@ -39,6 +37,7 @@ export class PurchaseListUI {
 		});
 	}
 
+	// Undo the last action and hide an undo notification
 	undoAction() {
 		if (this.notificationTimeout) {
 			clearTimeout(this.notificationTimeout);
@@ -52,6 +51,7 @@ export class PurchaseListUI {
 		}
 	}
 
+	// Clear the list and show an undo notification
 	clearList() {
 		const itemIds = this.controller
 			.getFilteredItems()
@@ -71,10 +71,12 @@ export class PurchaseListUI {
 		}
 	}
 
+	// Set filter to show all, done, or undone items
 	setFilter(filter: "all" | "done" | "undone") {
 		this.controller.setFilter(filter);
 	}
 
+	// Hide items by id, it is used to hide items before removing them in case user wants to undo deletions
 	hideItem(ids?: number[]): Promise<void> {
 		return new Promise((resolve) => {
 			const targetIds =
@@ -86,6 +88,7 @@ export class PurchaseListUI {
 		});
 	}
 
+	// Show items by id, it is used to show items after undoing deletions
 	showItem(ids?: number[]): Promise<void> {
 		return new Promise((resolve) => {
 			const targetIds =
@@ -97,6 +100,7 @@ export class PurchaseListUI {
 		});
 	}
 
+	// Show a notification to undo the last action (remove or clear)
 	showNotification(
 		sType: "remove" | "clear",
 		timeoutMs = 5000

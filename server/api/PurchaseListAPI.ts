@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 
 class PurchaseListAPI {
+	// Initial list data
 	private purchaseList: Record<
 		number,
 		{ id: number; text: string; completed: boolean; hide: boolean }
@@ -10,14 +11,18 @@ class PurchaseListAPI {
 		2: { id: 2, text: "Bread", completed: true, hide: false },
 		3: { id: 3, text: "Butter", completed: false, hide: false },
 	};
+	// Last used ID
 	private lastId = 3;
+	// Initialization flag
 	private initialized = false;
+	// Path to the file with the list data
 	private dataFilePath = path.join(
 		process.cwd(),
 		"data",
 		"purchase-list.json"
 	);
 
+	// Initialize the list from the file or create a new one with initial data
 	initializeList() {
 		return fs
 			.readFile(this.dataFilePath, "utf8")
@@ -45,6 +50,7 @@ class PurchaseListAPI {
 			});
 	}
 
+	// Save the list data to the file
 	savePurchaseList() {
 		return fs.writeFile(
 			this.dataFilePath,
@@ -52,6 +58,7 @@ class PurchaseListAPI {
 		);
 	}
 
+	// Get the list of items
 	getList() {
 		if (!this.initialized) {
 			return this.initializeList().then(() => this.purchaseList);
@@ -59,6 +66,7 @@ class PurchaseListAPI {
 		return Promise.resolve(this.purchaseList);
 	}
 
+	// Add a new item to the list
 	addItem(text: any, completed: boolean = false, hide: boolean = false) {
 		return (
 			!this.initialized ? this.initializeList() : Promise.resolve()
@@ -69,6 +77,7 @@ class PurchaseListAPI {
 		});
 	}
 
+	// Toggle the completed status of an item
 	toggleItem(id: number) {
 		return (
 			!this.initialized ? this.initializeList() : Promise.resolve()
@@ -82,6 +91,7 @@ class PurchaseListAPI {
 		});
 	}
 
+	// Remove items from the list
 	deleteItems(ids: number[]) {
 		return (
 			!this.initialized ? this.initializeList() : Promise.resolve()
@@ -93,6 +103,7 @@ class PurchaseListAPI {
 		});
 	}
 
+	// Clear the list
 	clearList() {
 		return (
 			!this.initialized ? this.initializeList() : Promise.resolve()
@@ -103,8 +114,10 @@ class PurchaseListAPI {
 	}
 }
 
+// Create an instance of the PurchaseListAPI class
 const purchaseListService = new PurchaseListAPI();
 
+// Define the event handler to process requests to the purchase list API
 export default defineEventHandler((event) => {
 	const method = event.node.req.method;
 

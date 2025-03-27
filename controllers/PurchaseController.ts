@@ -1,6 +1,7 @@
 import { reactive, ref } from "vue";
 import { PurchaseItem } from "~/models/PurchaseModel";
 
+// The base URL for the API
 const baseUrl = import.meta.server ? "http://localhost:3000" : "";
 
 export class PurchaseController {
@@ -11,20 +12,22 @@ export class PurchaseController {
 		this.fetchItems();
 	}
 
+	// Custom fetch method to handle API requests without unecessary code duplication
 	private fetch<T = any>(method: string, body?: any): Promise<T> {
 		return fetch(`${baseUrl}/api/PurchaseListAPI`, {
 			method,
 			headers: { "Content-Type": "application/json" },
 			body: body ? JSON.stringify(body) : undefined,
-		}) .then(async (response) => {
+		}).then(async (response) => {
 			if (!response.ok) {
-			  throw new Error(`Fetch error: ${response.status}`);
+				throw new Error(`Fetch error: ${response.status}`);
 			}
 			const text = await response.text();
 			return text ? JSON.parse(text) : {};
-		  });
+		});
 	}
 
+	// Fetch the list of items from the server
 	fetchItems() {
 		this.fetch("GET")
 			.then((data) => {
@@ -40,6 +43,7 @@ export class PurchaseController {
 			});
 	}
 
+	// Add a new item to the list
 	addItem(text: string) {
 		this.fetch("POST", { text })
 			.then((newItem) => {
@@ -51,6 +55,7 @@ export class PurchaseController {
 			});
 	}
 
+	// Toggle the completed status of an item
 	toggleItem(id: number) {
 		this.fetch("PUT", { id })
 			.then((updatedItem) => {
@@ -64,6 +69,7 @@ export class PurchaseController {
 			});
 	}
 
+	// Hide an item from the list
 	hideItem(ids: number[]) {
 		for (const id of ids) {
 			const key = id.toString();
@@ -73,6 +79,7 @@ export class PurchaseController {
 		}
 	}
 
+	// Show a hidden item
 	showItem(ids: number[]) {
 		for (const id of ids) {
 			const key = id.toString();
@@ -82,6 +89,7 @@ export class PurchaseController {
 		}
 	}
 
+	// Remove an item from the list
 	removeItem(ids: number[]) {
 		this.fetch("DELETE", { action: "remove", ids })
 			.then(() => {
@@ -95,6 +103,7 @@ export class PurchaseController {
 			});
 	}
 
+	// Clear the list
 	clearList() {
 		this.fetch("DELETE", { action: "clear" })
 			.then(() => {
@@ -107,14 +116,16 @@ export class PurchaseController {
 			});
 	}
 
+	// Set filter to show all, done, or undone items
 	setFilter(filter: "all" | "done" | "undone") {
 		this.filter.value = filter;
 	}
 
+	// Get the list of items
 	getFilteredItems(): PurchaseItem[] {
 		return Object.values(this.items).filter((item: PurchaseItem) => {
 			if (item.hide) {
-			 	return false;
+				return false;
 			}
 			if (this.filter.value === "done") {
 				return item.completed;

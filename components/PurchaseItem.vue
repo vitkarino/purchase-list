@@ -19,8 +19,10 @@
 
 <script setup lang="ts">
 import { PurchaseItem } from "~/models/PurchaseModel";
-defineProps<{ item: PurchaseItem }>();
+
 const emit = defineEmits(["toggle", "remove"]);
+
+defineProps<{ item: PurchaseItem }>();
 </script>
 
 <style scoped lang="scss">

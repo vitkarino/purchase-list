@@ -3,7 +3,10 @@
 		<div v-if="show" class="undo-notification">
 			<span>{{ message }}</span>
 			<button class="button undo_button" @click="$emit('undo')">
-				UNDO
+				<Icon
+					class="icon button_icon"
+					name="material-symbols:settings-backup-restore-rounded"
+				/>
 			</button>
 		</div>
 	</transition>
@@ -24,8 +27,8 @@ defineExpose({
 		show.value = true;
 	},
 	hide() {
-		show.value = false
-	}
+		show.value = false;
+	},
 });
 </script>
 
