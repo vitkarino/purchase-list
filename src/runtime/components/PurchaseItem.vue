@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { PurchaseItem } from "~/models/PurchaseModel";
+import { PurchaseItem } from "~/src/runtime/models/PurchaseModel";
 
 const emit = defineEmits(["toggle", "remove"]);
 

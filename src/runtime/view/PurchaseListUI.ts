@@ -1,4 +1,4 @@
-import { PurchaseController } from "~/controllers/PurchaseController";
+import { PurchaseController } from "~/src/runtime/controllers/PurchaseController";
 import { computed } from "vue";
 
 export class PurchaseListUI {

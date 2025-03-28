@@ -1,5 +1,5 @@
 import { reactive, ref } from "vue";
-import { PurchaseItem } from "~/models/PurchaseModel";
+import { PurchaseItem } from "~/src/runtime/models/PurchaseModel";
 
 // The base URL for the API
 const baseUrl = import.meta.server ? "http://localhost:3000" : "";
