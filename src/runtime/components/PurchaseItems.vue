@@ -1,7 +1,7 @@
 <template>
 	<div class="purchase-items">
 		<div v-if="items.length === 0" class="empty-list-message">
-			No tasks found!
+			No items found!
 		</div>
 		<PurchaseItem
 			v-for="item in items"

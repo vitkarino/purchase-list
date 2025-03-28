@@ -1,19 +1,7 @@
 {
-  "1": {
-    "id": 1,
-    "text": "Milk",
-    "completed": false,
-    "hide": false
-  },
-  "2": {
-    "id": 2,
-    "text": "Bread",
-    "completed": true,
-    "hide": false
-  },
-  "3": {
-    "id": 3,
-    "text": "Butter",
+  "6": {
+    "id": 6,
+    "text": "test",
     "completed": false,
     "hide": false
   }

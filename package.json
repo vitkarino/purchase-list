@@ -1,6 +1,6 @@
 {
 	"name": "purchase-list-module",
-	"private": true,
+	"version": "1.0.0",
 	"description": "Purchase list module for Nuxt",
 	"repository": "https://github.com/vitkarino/purchase-list.git",
 	"license": "MIT",

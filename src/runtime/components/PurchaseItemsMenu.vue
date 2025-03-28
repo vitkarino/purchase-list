@@ -8,7 +8,7 @@
 					value="all"
 					v-model="currentFilter"
 				/>
-				All
+				<span>All</span>
 			</label>
 			<label class="button button_radio">
 				<input

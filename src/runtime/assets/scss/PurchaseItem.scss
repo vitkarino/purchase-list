@@ -17,13 +17,14 @@
 
 	&.item_completed .list-item__text {
 		text-decoration: line-through;
-		opacity: 0.3;
+		opacity: 0.2;
 	}
 
 	&.item_completed .button_checkbox .button_icon {
 		display: block;
-	}
 
+	}
+	
 	.button_checkbox {
 		@include icon-button;
 		display: flex;
