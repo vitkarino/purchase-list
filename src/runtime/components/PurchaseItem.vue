@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { PurchaseItem } from "~/src/runtime/models/PurchaseModel";
+import { PurchaseItem } from "../models/PurchaseModel";
 
 const emit = defineEmits(["toggle", "remove"]);
 
@@ -26,5 +26,5 @@ defineProps<{ item: PurchaseItem }>();
 </script>
 
 <style scoped lang="scss">
-@use "~/assets/scss/PurchaseItem.scss";
+@use "../assets/scss/PurchaseItem.scss";
 </style>

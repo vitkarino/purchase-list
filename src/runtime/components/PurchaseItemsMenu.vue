@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+// import { ref, watch } from "vue";
 
 const emit = defineEmits(["clear", "setFilter"]);
 const currentFilter = ref("all");
@@ -47,5 +47,5 @@ watch(currentFilter, (newFilter) => {
 </script>
 
 <style lang="scss">
-@use "~/assets/scss/PurchaseItemsMenu.scss";
+@use "../assets/scss/PurchaseItemsMenu.scss";
 </style>

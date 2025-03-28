@@ -14,6 +14,8 @@
 </template>
 
 <script setup lang="ts">
+// import { ref, computed } from "vue";
+
 const show = ref(false);
 const notificationType = ref<"remove" | "clear">("remove");
 
@@ -34,5 +36,5 @@ defineExpose({
 </script>
 
 <style scoped lang="scss">
-@use "~/assets/scss/UndoNotification.scss" as *;
+@use "../assets/scss/UndoNotification.scss" as *;
 </style>

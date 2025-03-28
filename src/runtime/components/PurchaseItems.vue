@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { PurchaseListUI } from "~/src/runtime/controllers/PurchaseListUI";
+// import { ref, computed, onMounted } from "vue";
+import { PurchaseListUI } from "../controllers/PurchaseListUI";
 
 const props = defineProps<{
 	ui: PurchaseListUI;
@@ -32,5 +32,5 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-@use "~/assets/scss/PurchaseItems.scss" as *;
+@use "../assets/scss/PurchaseItems.scss" as *;
 </style>

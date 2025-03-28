@@ -10,9 +10,10 @@
 </template>
 
 <script setup lang="ts">
-import PurchaseItems from "~/components/PurchaseItems.vue";
+// import { ref } from "vue";
+import PurchaseItems from "./PurchaseItems.vue";
 import PurchaseListHeader from "./PurchaseListHeader.vue";
-import { PurchaseListUI } from "~/src/runtime/controllers/PurchaseListUI";
+import { PurchaseListUI } from "../controllers/PurchaseListUI";
 
 const inputValue = ref("");
 const purchaseItemsRef = ref<InstanceType<typeof PurchaseItems> | null>(null);
@@ -20,5 +21,5 @@ const ui = new PurchaseListUI();
 </script>
 
 <style lang="scss">
-@use "~/assets/scss/default.scss";
+@use "../assets/scss/default.scss";
 </style>

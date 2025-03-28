@@ -28,8 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
-import { PurchaseListUI } from "~/src/runtime/controllers/PurchaseListUI";
+import { PurchaseListUI } from "../controllers/PurchaseListUI";
 
 const props = defineProps<{
 	inputValue: string;
@@ -44,5 +43,5 @@ watch(
 </script>
 
 <style lang="scss">
-@use "~/assets/scss/default.scss";
+@use "../assets/scss/default.scss";
 </style>

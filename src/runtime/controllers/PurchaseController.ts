@@ -1,8 +1,13 @@
-import { reactive, ref } from "vue";
-import { PurchaseItem } from "~/src/runtime/models/PurchaseModel";
+// import { reactive, ref } from "vue";
+import { PurchaseItem } from "../models/PurchaseModel";
 
 // The base URL for the API
 const baseUrl = import.meta.server ? "http://localhost:3000" : "";
+
+const apiEndpoint =
+	(typeof window !== "undefined" &&
+		window.__NUXT__?.config?.public?.purchaseList?.apiEndpoint) ||
+	"/api/purchase-list";
 
 export class PurchaseController {
 	public items = reactive<Record<string, PurchaseItem>>({});
@@ -12,15 +17,19 @@ export class PurchaseController {
 		this.fetchItems();
 	}
 
-	// Custom fetch method to handle API requests without unecessary code duplication
+	// Custom fetch method to handle API requests without unnecessary code duplication
 	private fetch<T = any>(method: string, body?: any): Promise<T> {
-		return fetch(`${baseUrl}/api/PurchaseListAPI`, {
+		const url = `${baseUrl}${apiEndpoint}`;
+
+		return fetch(url, {
 			method,
 			headers: { "Content-Type": "application/json" },
 			body: body ? JSON.stringify(body) : undefined,
 		}).then(async (response) => {
 			if (!response.ok) {
-				throw new Error(`Fetch error: ${response.status}`);
+				throw new Error(
+					`API error: ${response.status} ${response.statusText}`
+				);
 			}
 			const text = await response.text();
 			return text ? JSON.parse(text) : {};
