@@ -4,18 +4,12 @@
 			<span>{{ message }}</span>
 			<button class="button undo_button" @click="$emit('undo')">
 				Undo
-				<!-- <Icon
-					class="icon button_icon"
-					name="material-symbols:settings-backup-restore-rounded"
-				/> -->
 			</button>
 		</div>
 	</transition>
 </template>
 
 <script setup lang="ts">
-// import { ref, computed } from "vue";
-
 const show = ref(false);
 const notificationType = ref<"remove" | "clear">("remove");
 

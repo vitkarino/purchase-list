@@ -11,10 +11,8 @@
 
 .purchase-list__header {
 	@include flex-center;
-	// justify-content: space-between;
 	flex-direction: column;
 	font-size: 14pt;
-	// gap: 2em;
 
 	.header__title {
 		@include flex-center;
@@ -37,7 +35,6 @@
 	justify-content: space-between;
 	margin-right: auto;
 	align-items: stretch;
-	// flex-grow: 1;
 	gap: 0.325em;
 }
 
@@ -46,14 +43,14 @@
 	font-size: 10pt;
 	padding-inline: 2em;
 	flex-grow: 1;
-	border: none;
-	// border-radius: 50px;
 	border-radius: 10px;
 	outline: none;
 	background-color: $input-bg;
+	border: 1px solid $input-border;
 	color: $input-text;
 
 	&:focus {
 		background-color: $input-active-bg;
+		border: 1px solid rgba($color: $button-primary, $alpha: 0.5);
 	}
 }

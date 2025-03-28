@@ -36,8 +36,6 @@
 </template>
 
 <script setup lang="ts">
-// import { ref, watch } from "vue";
-
 const emit = defineEmits(["clear", "setFilter"]);
 const currentFilter = ref("all");
 

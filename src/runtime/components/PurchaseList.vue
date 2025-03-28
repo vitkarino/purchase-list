@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-// import { ref } from "vue";
 import PurchaseItems from "./PurchaseItems.vue";
 import PurchaseListHeader from "./PurchaseListHeader.vue";
 import { PurchaseListUI } from "../controllers/PurchaseListUI";

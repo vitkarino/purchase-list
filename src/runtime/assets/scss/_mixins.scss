@@ -19,8 +19,8 @@
 @mixin button-base($size: auto) {
 	@include transition;
 	background: none;
+	border: 1px solid $input-border;
 	outline: none;
-	border: none;
 	padding: 0;
 	cursor: pointer;
 	font-family: inherit;
@@ -33,7 +33,6 @@
 	@include button-base;
 	padding: 0.5em;
 	width: fit-content;
-	// border-radius: 50px;
 	border-radius: 10px;
 	font-size: 10pt;
 	background-color: $checkbox-bg;
@@ -42,11 +41,15 @@
 	&:hover {
 		background-color: $button-primary-bg;
 		color: $button-primary;
-		outline: 1px solid rgba($color: $button-primary, $alpha: 0.5);
+		border: 1px solid rgba($color: $button-primary, $alpha: 0.5);
 
 		> .icon {
 			color: $button-primary;
 		}
+	}
+
+	&:active {
+		transform: scale(0.97);
 	}
 }
 
@@ -63,5 +66,9 @@
 		> .icon {
 			color: $button-primary;
 		}
+	}
+
+	&:active {
+		transform: scale(0.97);
 	}
 }

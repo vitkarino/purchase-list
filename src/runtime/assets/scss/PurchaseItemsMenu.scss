@@ -21,9 +21,10 @@
 .sort-controls {
 	@include flex-center;
 	justify-content: space-between;
+	border: 1px solid $input-border;
 	background-color: $input-bg;
 	padding: 0.325em;
-	border-radius: 50px;
+	border-radius: 10px;
 
 	.button_radio {
 		@include text-button;
@@ -31,6 +32,9 @@
 		text-align: center;
 		background: none;
 		position: relative;
+		border: none !important;
+		background: none !important;
+		box-sizing: border-box;
 		flex: 1;
 
 		&::before {
@@ -40,7 +44,8 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
-			border-radius: 50px;
+			border-radius: 10px;
+			box-sizing: border-box;
 			background: none;
 		}
 
@@ -53,6 +58,7 @@
 
 			&::before {
 				background-color: $button-primary-bg;
+				border: 1px solid rgba($color: $button-primary, $alpha: 0.5);
 				animation: scale-in 0.3s ease forwards;
 			}
 		}

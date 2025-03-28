@@ -3,7 +3,7 @@
 		<div v-if="items.length === 0" class="empty-list-message">
 			No tasks found!
 		</div>
-			<PurchaseItem
+		<PurchaseItem
 			v-for="item in items"
 			:key="item.id"
 			:item="item"
@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-// import { ref, computed, onMounted } from "vue";
 import { PurchaseListUI } from "../controllers/PurchaseListUI";
 
 const props = defineProps<{

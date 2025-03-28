@@ -1,4 +1,3 @@
-// import { reactive, ref } from "vue";
 import { PurchaseItem } from "../models/PurchaseModel";
 
 // The base URL for the API

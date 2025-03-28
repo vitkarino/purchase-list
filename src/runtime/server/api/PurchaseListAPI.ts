@@ -18,10 +18,12 @@ class PurchaseListAPI {
 	private initialized = false;
 	// Path to the file with the list data
 	private dataFilePath = path.join(
-		process.cwd(),
-		"data",
-		"purchase-list.json"
-	);
+        process.cwd(),
+        "src", 
+        "runtime",
+        "data",
+        "purchase-list.json"
+    );
 
 	// Initialize the list from the file or create a new one with initial data
 	initializeList() {

@@ -17,7 +17,7 @@
 				v-model="updatedValue"
 				type="text"
 				class="form__input"
-				placeholder="New item"
+				placeholder="Item name"
 			/>
 			<button type="submit" class="button button_submit">
 				<Icon class="icon button_icon" name="material-symbols:add" />

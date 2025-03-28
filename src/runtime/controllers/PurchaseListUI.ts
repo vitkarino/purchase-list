@@ -1,5 +1,5 @@
 import { PurchaseController } from "./PurchaseController";
-// import { computed } from "vue";
+import { computed } from "vue";
 
 export class PurchaseListUI {
 	private controller: PurchaseController;
@@ -15,6 +15,7 @@ export class PurchaseListUI {
 
 	// Add a new item to the list
 	addItem(text: string) {
+		if (!text) return;
 		this.controller.addItem(text);
 	}
 

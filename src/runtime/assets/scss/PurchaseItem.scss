@@ -10,8 +10,6 @@
 	font-size: 16pt;
 	border-bottom: 1px solid $input-bg;
 
-
-
 	.button_remove {
 		@include icon-button;
 		margin-left: auto;
@@ -29,14 +27,14 @@
 	.button_checkbox {
 		@include icon-button;
 		display: flex;
-		background-color: $checkbox-bg;
 
 		&:hover {
 			background-color: $button-primary-bg;
+			border: 1px solid rgba($color: $button-primary, $alpha: 0.5);
 		}
 
 		.button_icon {
-			color: $color-white;
+			color: $button-primary;
 			display: none;
 		}
 	}
