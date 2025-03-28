@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { PurchaseListUI } from "~/src/runtime/view/PurchaseListUI";
+import { PurchaseListUI } from "~/src/runtime/controllers/PurchaseListUI";
 
 const props = defineProps<{
 	ui: PurchaseListUI;

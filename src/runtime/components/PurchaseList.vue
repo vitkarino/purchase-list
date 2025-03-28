@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import PurchaseItems from "~/components/PurchaseItems.vue";
 import PurchaseListHeader from "./PurchaseListHeader.vue";
-import { PurchaseListUI } from "~/src/runtime/view/PurchaseListUI";
+import { PurchaseListUI } from "~/src/runtime/controllers/PurchaseListUI";
 
 const inputValue = ref("");
 const purchaseItemsRef = ref<InstanceType<typeof PurchaseItems> | null>(null);

@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
-import { PurchaseListUI } from "~/src/runtime/view/PurchaseListUI";
+import { PurchaseListUI } from "~/src/runtime/controllers/PurchaseListUI";
 
 const props = defineProps<{
 	inputValue: string;

@@ -1,22 +1,46 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "dependencies": {
-    "@nuxt/icon": "^1.10.3",
-    "nuxt": "^3.16.1",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
-  },
-  "devDependencies": {
-    "@iconify-json/material-symbols": "^1.2.15",
-    "sass": "^1.85.1"
-  }
+	"name": "purchase-list-module",
+	"private": true,
+	"description": "Purchase list module for Nuxt",
+	"repository": "https://github.com/vitkarino/purchase-list.git",
+	"license": "MIT",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/types.d.ts",
+			"import": "./dist/module.mjs",
+			"require": "./dist/module.cjs"
+		}
+	},
+	"main": "./dist/module.cjs",
+	"types": "./dist/types.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"prepack": "nuxt-module-build build",
+		"dev": "nuxi dev playground",
+		"dev:build": "nuxi build playground",
+		"dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+		"release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+		"lint": "eslint .",
+		"test": "vitest run",
+		"test:watch": "vitest watch",
+		"test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+	},
+	"devDependencies": {
+		"@nuxt/devtools": "^2.3.2",
+		"@nuxt/eslint-config": "^1.2.0",
+		"@nuxt/kit": "^3.16.1",
+		"@nuxt/module-builder": "^0.8.4",
+		"@nuxt/schema": "^3.16.1",
+		"@nuxt/test-utils": "^3.17.2",
+		"@types/node": "latest",
+		"changelogen": "^0.6.1",
+		"eslint": "^9.23.0",
+		"nuxt": "^3.16.1",
+		"typescript": "~5.8.2",
+		"vitest": "^3.0.9",
+		"vue-tsc": "^2.2.8"
+	}
 }
