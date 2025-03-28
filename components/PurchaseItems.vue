@@ -11,10 +11,6 @@
 			@toggle="ui.toggleItem(item.id)"
 		/>
 	</div>
-	<!-- <PurchaseItemsMenu
-		@setFilter="ui.setFilter($event)"
-		@clear="ui.clearList()"
-	/> -->
 	<UndoNotifications ref="undoNotifications" @undo="ui.undoAction()" />
 </template>
 

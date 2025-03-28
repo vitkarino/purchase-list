@@ -19,7 +19,7 @@
 	z-index: 1000;
 
 	.undo_button {
-		@include icon-button;
+		@include text-button;
 		background-color: $checkbox-bg;
 	
 		&:hover {
